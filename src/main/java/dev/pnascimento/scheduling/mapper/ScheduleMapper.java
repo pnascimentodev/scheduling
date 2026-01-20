@@ -4,6 +4,8 @@ import dev.pnascimento.scheduling.dto.schedule.ScheduleCreateRequest;
 import dev.pnascimento.scheduling.entity.schedule.Scheduling;
 import dev.pnascimento.scheduling.entity.schedule.StatusScheduling;
 
+import java.time.LocalDateTime;
+
 public class ScheduleMapper {
 
     public static Scheduling toEntity(ScheduleCreateRequest req) {
@@ -14,6 +16,8 @@ public class ScheduleMapper {
                 .endDate(req.endDate())
                 .userId(req.userId())
                 .status(StatusScheduling.SCHEDULED)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 }
