@@ -8,6 +8,8 @@ import dev.pnascimento.scheduling.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class UserService {
 
@@ -35,6 +37,8 @@ public class UserService {
         conflictChecker(req.email());
 
         UserMapper.merge(user, req);
+        user.setUpdatedAt(LocalDateTime.now());
+
         user = userRepo.save(user);
         return UserMapper.toResponse(user);
     }
