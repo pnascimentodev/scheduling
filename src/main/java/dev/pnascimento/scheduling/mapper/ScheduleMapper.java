@@ -47,6 +47,6 @@ public class ScheduleMapper {
                 a.getUserId(),
                 a.getCreatedAt(),
                 a.getUpdatedAt()
-        );
+            );
     }
 }
