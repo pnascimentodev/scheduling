@@ -1,7 +1,6 @@
 package dev.pnascimento.scheduling.repository;
 
 import dev.pnascimento.scheduling.entity.schedule.Scheduling;
-import dev.pnascimento.scheduling.entity.schedule.StatusScheduling;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
