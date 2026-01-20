@@ -18,26 +18,26 @@ public class scheduleController {
 
     @PostMapping
     public Scheduling create(@Valid @RequestBody ScheduleCreateRequest request) {
-        return scheduleService.create(request);
+        return scheduleService.createSchedule(request);
     }
 
     @PutMapping("/{id}")
     public Scheduling update(@RequestParam Long id, @Valid @RequestBody ScheduleCreateRequest request) {
-        return scheduleService.update(id, request);
+        return scheduleService.updateSchedule(id, request);
     }
 
     @PutMapping("/{id}/cancel")
     public Scheduling cancel(@RequestParam Long id) {
-        return scheduleService.cancel(id);
+        return scheduleService.cancelSchedule(id);
     }
 
     @PutMapping("/{id}/conclude")
     public Scheduling conclude(@RequestParam Long id) {
-        return scheduleService.conclude(id);
+        return scheduleService.concludeSchedule(id);
     }
 
     @GetMapping("/{id}")
     public Scheduling getById(@RequestParam Long id) {
-        return scheduleService.getById(id);
+        return scheduleService.getScheduleById(id);
     }
 }

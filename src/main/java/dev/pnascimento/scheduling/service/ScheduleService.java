@@ -18,7 +18,7 @@ public class ScheduleService {
         this.repo = repo;
     }
 
-    public Scheduling create(@Valid ScheduleCreateRequest req){
+    public Scheduling createSchedule(@Valid ScheduleCreateRequest req){
 
         gapValidator(req.startDate(), req.endDate());
         conflictChecker(req.userId(), req.startDate(), req.endDate(), null);
@@ -29,7 +29,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public Scheduling update(Long id, @Valid ScheduleCreateRequest req){
+    public Scheduling updateSchedule(Long id, @Valid ScheduleCreateRequest req){
 
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
@@ -44,7 +44,7 @@ public class ScheduleService {
         return ScheduleMapper.toResponse(entity);
     }
 
-    public Scheduling cancel(Long id) {
+    public Scheduling cancelSchedule(Long id) {
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
 
@@ -55,7 +55,7 @@ public class ScheduleService {
         return  ScheduleMapper.toResponse(entity);
     }
 
-    public Scheduling conclude(Long id) {
+    public Scheduling concludeSchedule(Long id) {
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
         entity.setStatus(StatusScheduling.CONCLUDED);
@@ -65,7 +65,7 @@ public class ScheduleService {
         return  ScheduleMapper.toResponse(entity);
     }
 
-    public Scheduling getById(Long id) {
+    public Scheduling getScheduleById(Long id) {
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
         return ScheduleMapper.toResponse(entity);
