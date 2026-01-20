@@ -20,4 +20,33 @@ public class ScheduleMapper {
                 .updatedAt(LocalDateTime.now())
                 .build();
     }
+
+    public static void merge(Scheduling entity, ScheduleCreateRequest req) {
+        if (req.name() != null) {
+            entity.setName(req.name());
+        }
+        if (req.description() != null) {
+            entity.setDescription(req.description());
+        }
+        if (req.startDate() != null) {
+            entity.setStartDate(req.startDate());
+        }
+        if (req.endDate() != null) {
+            entity.setEndDate(req.endDate());
+        }
+    }
+
+    public static Scheduling toResponse(Scheduling a) {
+        return new Scheduling(
+                a.getId(),
+                a.getName(),
+                a.getDescription(),
+                a.getStartDate(),
+                a.getEndDate(),
+                a.getStatus(),
+                a.getUserId(),
+                a.getCreatedAt(),
+                a.getUpdatedAt()
+        );
+    }
 }
