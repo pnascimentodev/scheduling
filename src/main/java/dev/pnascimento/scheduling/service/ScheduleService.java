@@ -1,15 +1,18 @@
 package dev.pnascimento.scheduling.service;
 
 import dev.pnascimento.scheduling.dto.schedule.ScheduleCreateRequest;
+import dev.pnascimento.scheduling.dto.schedule.ScheduleResponse;
 import dev.pnascimento.scheduling.entity.schedule.Scheduling;
 import dev.pnascimento.scheduling.entity.schedule.StatusScheduling;
 import dev.pnascimento.scheduling.mapper.ScheduleMapper;
 import dev.pnascimento.scheduling.repository.ScheduleRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+@Service
 public class ScheduleService {
 
     private final ScheduleRepository repo;
@@ -18,7 +21,7 @@ public class ScheduleService {
         this.repo = repo;
     }
 
-    public Scheduling createSchedule(@Valid ScheduleCreateRequest req){
+    public ScheduleResponse createSchedule(@Valid ScheduleCreateRequest req) {
 
         gapValidator(req.startDate(), req.endDate());
         conflictChecker(req.userId(), req.startDate(), req.endDate(), null);
@@ -29,7 +32,7 @@ public class ScheduleService {
     }
 
     @Transactional
-    public Scheduling updateSchedule(Long id, @Valid ScheduleCreateRequest req){
+    public ScheduleResponse updateSchedule(Long id, @Valid ScheduleCreateRequest req) {
 
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
@@ -44,7 +47,7 @@ public class ScheduleService {
         return ScheduleMapper.toResponse(entity);
     }
 
-    public Scheduling cancelSchedule(Long id) {
+    public ScheduleResponse cancelSchedule(Long id) {
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
 
@@ -52,20 +55,20 @@ public class ScheduleService {
         entity.setUpdatedAt(LocalDateTime.now());
         entity = repo.save(entity);
 
-        return  ScheduleMapper.toResponse(entity);
+        return ScheduleMapper.toResponse(entity);
     }
 
-    public Scheduling concludeSchedule(Long id) {
+    public ScheduleResponse concludeSchedule(Long id) {
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
         entity.setStatus(StatusScheduling.CONCLUDED);
         entity.setUpdatedAt(LocalDateTime.now());
         entity = repo.save(entity);
 
-        return  ScheduleMapper.toResponse(entity);
+        return ScheduleMapper.toResponse(entity);
     }
 
-    public Scheduling getScheduleById(Long id) {
+    public ScheduleResponse getScheduleById(Long id) {
         Scheduling entity = repo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Scheduling not found"));
         return ScheduleMapper.toResponse(entity);
@@ -73,7 +76,7 @@ public class ScheduleService {
 
     private void gapValidator(LocalDateTime start, LocalDateTime end) {
         if (start == null || end == null || !start.isBefore(end)) {
-        throw new IllegalArgumentException("Invalid date range: start date must be before end date.");
+            throw new IllegalArgumentException("Invalid date range: start date must be before end date.");
         }
     }
 
@@ -81,7 +84,7 @@ public class ScheduleService {
         boolean hasConflict = repo.existConflict(userId, start, end, excludeId);
         if (hasConflict) {
             throw new IllegalStateException("Scheduling conflict detected! There is already an appointment scheduled for that time.");
+        }
     }
 }
 
-}

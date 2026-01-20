@@ -1,6 +1,7 @@
 package dev.pnascimento.scheduling.mapper;
 
 import dev.pnascimento.scheduling.dto.schedule.ScheduleCreateRequest;
+import dev.pnascimento.scheduling.dto.schedule.ScheduleResponse;
 import dev.pnascimento.scheduling.entity.schedule.Scheduling;
 import dev.pnascimento.scheduling.entity.schedule.StatusScheduling;
 
@@ -36,17 +37,18 @@ public class ScheduleMapper {
         }
     }
 
-    public static Scheduling toResponse(Scheduling a) {
-        return new Scheduling(
+    public static ScheduleResponse toResponse(Scheduling a) {
+        if (a == null) return null;
+        return new ScheduleResponse(
                 a.getId(),
                 a.getName(),
                 a.getDescription(),
                 a.getStartDate(),
                 a.getEndDate(),
-                a.getStatus(),
                 a.getUserId(),
+                a.getStatus().name(),
                 a.getCreatedAt(),
                 a.getUpdatedAt()
-            );
+        );
     }
 }

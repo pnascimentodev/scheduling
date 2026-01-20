@@ -1,6 +1,7 @@
 package dev.pnascimento.scheduling.repository;
 
 import dev.pnascimento.scheduling.entity.schedule.Scheduling;
+import dev.pnascimento.scheduling.entity.schedule.StatusScheduling;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,10 +14,12 @@ public interface ScheduleRepository extends JpaRepository<Scheduling, Long> {
             SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END
             FROM Scheduling a
             WHERE a.userId = :userId
-              AND a.status = status.SCHEDULED
+              AND a.status = 'SCHEDULED'
               AND (:excludeId IS NULL OR a.id <> :excludeId)
+              AND (
+                (a.startDate <= :endDate AND a.endDate >= :startDate)
+              )
             """)
-
 
     boolean existConflict(
             @Param("userId") Long userId,
