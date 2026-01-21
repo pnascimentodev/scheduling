@@ -20,6 +20,17 @@ public interface UserRepository extends JpaRepository <User, Long> {
             @Param("excludeId") Long excludeId
     );
 
+    @Query("""
+            SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END
+            FROM User u
+            WHERE u.name = :name
+              AND (:excludeId IS NULL OR u.id <> :excludeId)
+            """)
+    boolean existUsernameConflict(
+            @Param("name") String name,
+            @Param("excludeId") Long excludeId
+    );
+
     Optional<User> findByEmail(String email);
 
 }
